@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  mariadb:
+    image: 'bitnami/mariadb:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - /path/to/mariadb-persistence:/bitnami
+  ghost:
+    image: bitnami/ghost:latest
+    depends_on:
+      - mariadb
+    ports:
+      - '80:2368'
+    volumes:
+      - '/path/to/ghost-persistence:/bitnami'
