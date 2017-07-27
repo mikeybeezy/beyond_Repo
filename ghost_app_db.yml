@@ -6,7 +6,7 @@ services:
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     volumes:
-      - /path/to/mariadb-persistence:/bitnami
+      - /home/ubuntu/mariadb-persistence:/bitnami
   ghost:
     image: bitnami/ghost:latest
     depends_on:
@@ -14,4 +14,4 @@ services:
     ports:
       - '80:2368'
     volumes:
-      - '/path/to/ghost-persistence:/bitnami'
+      - '/home/ubuntu/ghost-persistence:/bitnami'
