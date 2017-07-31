@@ -21,4 +21,5 @@ Created an AWS environment to deploy the application into
 Some of the challenges I face include
 Finding the most efficient to maintain and manage persistent data across all platforms and instances
 orchrasting the implementiiopn of automation with as little human interacion as possible
+Design whether to pre bake ubuntu AMI's or install and configure then deploy the box and app on demand
 
