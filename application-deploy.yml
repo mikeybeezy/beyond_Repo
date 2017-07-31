@@ -1,6 +1,6 @@
 #Version One
-This is the version of the Application that can be deployed into any environment for testing as a single uint. 
-You should allow a wait time of a approx a minuet before attempting to access the app Vi the IP address
+This is the version of the Application that can be deployed into any environment as a single uint into a  and AWS VPC environment. formation . 
+You should allow a wait time of a approx a minuet or two before attempting to access the app Vi the IP box address/ghost
 
 
 Parameters:
