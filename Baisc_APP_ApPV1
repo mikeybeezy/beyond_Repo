@@ -1,0 +1,129 @@
+#Version One
+This is the version of the Application that can be deployed into any environment for testing as a single uint. 
+You should allow a wait time of a few minuets before attempting to acces the app vi the url
+
+
+Parameters:
+  InstanceType:
+    Type: "String"
+    Default: "t2.micro"
+    Description: "EC2 instance type, e.g. m1.small, m1.large, etc."
+    AllowedValues:
+      - t1.micro
+      - t2.micro
+      - t2.small
+      - t2.medium
+      - m1.small
+      - m1.medium
+      - m1.large
+      - m1.xlarge
+      - m2.xlarge
+      - m2.2xlarge
+      - m2.4xlarge
+      - m3.medium
+      - m3.large
+      - m3.xlarge
+      - m3.2xlarge
+      - c1.medium
+      - c1.xlarge
+      - c3.large
+      - c3.xlarge
+      - c3.2xlarge
+      - c3.4xlarge
+      - c3.8xlarge
+      - c4.large
+      - c4.xlarge
+      - c4.2xlarge
+      - c4.4xlarge
+      - c4.8xlarge
+      - g2.2xlarge
+      - r3.large
+      - r3.xlarge
+      - r3.2xlarge
+      - r3.4xlarge
+      - r3.8xlarge
+      - i2.xlarge
+      - i2.2xlarge
+      - i2.4xlarge
+      - i2.8xlarge
+      - d2.xlarge
+      - d2.2xlarge
+      - d2.4xlarge
+      - d2.8xlarge
+      - hi1.4xlarge
+      - hs1.8xlarge
+      - cr1.8xlarge
+      - cc2.8xlarge
+      - cg1.4xlarge
+  WebServerPort:
+    Type: "String"
+    Default: "8080"
+    Description: "TCP/IP port of the web server"
+  KeyName:
+    Type: "AWS::EC2::KeyPair::KeyName"
+    Description: "Name of an existing EC2 KeyPair to enable SSH access to the web server"
+
+Resources:
+
+  AppNode:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-bf8dd7c4
+
+      SecurityGroups:
+        - !Ref AppNodeSG
+      UserData: !Base64 |
+        #!/bin/bash
+        sudo apt-get update -qq
+        sudo apt-get -y install curl
+        sudo mkdir /home/ubuntu/GhostFiles
+        sudo mkdir /home/ubuntu/GhostDB
+        sudo apt-get -y install python-pip
+        sudo pip install docker-compose
+        sudo apt install awscli -y
+        
+        sudo apt-get install -y apt-transport-https ca-certificates
+        sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+        sudo echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" | tee /etc/apt/sources.list.d/docker.list
+        sudo apt-get update -qq
+        sudo apt-get purge lxc-docker || true
+        sudo apt-get -y install linux-image-extra-$(uname -r) linux-image-extra-virtual
+        sudo apt-get -y install docker-engine 
+        usermod -aG docker ubuntu
+        sudo mkdir -p /etc/systemd/system/docker.service.d
+        printf "[Service]\nExecStart=\nExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2375\n" >>  /etc/systemd/system/docker.service.d/docker.conf
+        sudo curl -o /usr/local/bin/docker-compose -L "https://github.com/docker/compose/releases/download/1.11.2/docker-compose-$(uname -s)-$(uname -m)"
+        sudo chmod +x /usr/local/bin/docker-compose
+        sudo wget "https://s3.amazonaws.com/beyond-bucket-2017/docker-compose.yml"
+        systemctl daemon-reload
+        systemctl restart docker
+        docker-compose up
+
+  AppNodeSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: for the app nodes that allow ssh, http and docker ports
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '2375'
+        ToPort: '2375'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '2368'
+        ToPort: '2368'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '3306'
+        ToPort: '3306'
+        CidrIp: 0.0.0.0/0
+  
+      
