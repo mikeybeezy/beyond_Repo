@@ -7,7 +7,7 @@ services:
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     volumes:
-      - /home/ubuntu/GhostDB:/bitnami
+      - /home/mikeybabs/GhostDB:/bitnami
   ghost:
     image: bitnami/ghost:latest
     depends_on:
@@ -15,4 +15,4 @@ services:
     ports:
       - '80:2368'
     volumes:
-      - /home/ubuntu/Ghost:/bitnami
+      - /home/mikeybabs/Ghost:/bitnami
