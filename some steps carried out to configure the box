@@ -1,0 +1,38 @@
+  #Settings Used To configure the boX
+        sudo apt-get update -qq
+        sudo apt-get -y install curl
+        sudo mkdir /home/mikeybabs/GhostFiles
+        sudo mkdir /home/mikeybabs/GhostDB
+        sudo apt-get -y install python-pip
+        sudo pip install docker-compose
+        sudo apt install awscli -y        
+        sudo apt-get install -y apt-transport-https ca-certificates
+        sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+        sudo echo "deb https://apt.dockerproject.org/repo ubuntu-xenial main" | tee /etc/apt/sources.list.d/docker.list
+        sudo apt-get update -qq
+        sudo apt-get purge lxc-docker || true
+        sudo apt-get -y install linux-image-extra-$(uname -r) linux-image-extra-virtual
+        sudo apt-get -y install docker-engine 
+        usermod -aG docker ubuntu
+        sudo mkdir -p /etc/systemd/system/docker.service.d
+        printf "[Service]\nExecStart=\nExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2375\n" >>  /etc/systemd/system/docker.service.d/docker.conf
+        sudo curl -o /usr/local/bin/docker-compose -L "https://github.com/docker/compose/releases/download/1.11.2/docker-compose-$(uname -s)-$(uname -m)"
+        sudo chmod +x /usr/local/bin/docker-compose
+        sudo wget "https://s3.amazonaws.com/beyond-bucket-2017/docker-compose.yml"
+        systemctl daemon-reload
+        systemctl restart docker
+        docker-compose up
+
+
+
+#Settings used to copy files from s3 to Ubuntu box mount location which is then serves files via docker
+sudo aws s3 cp --recursive s3://beyond-bucket-2017/ghostfiles/ /home/ubuntu/Ghost 
+
+sudo aws s3 cp --recursive s3://beyond-bucket-2017/ghostfiles/mariadbfiles /home/ubuntu/GhostDB 
+
+
+#CRON TAB SETTINGS TO SYNC UBUNTU BOX WITH S3
+
+*/5 * * * * root aws s3 sync --delete /home/mikeybabs/Ghost s3://beyond-bucket-2017/ghostfiles/
+
+*/5 * * * * root aws s3 sync --delete /home/mikeybabs/GhostDB s3://beyond-bucket-2017/ghostfiles/mariadbfiles
