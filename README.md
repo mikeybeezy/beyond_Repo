@@ -7,7 +7,7 @@ The web application is Ghost CMS. Ghost is an open source publishing platform bu
 
 Setup an ubuntu 16.04 box. Used docker containers to host a Node.js application. Used Docker To host a Maria DB container. Synced and replicated the content to AWS S3 Replicated content from AWS S3 to the Ubuntu Box that hosts the Docker containers Created an AWS environment to deploy the application into
 
-# How to deploy the application in a VPC environment 
+# How to deploy the application into a VPC environment 
 
 Copy the file application-deploy.yml from this repository (ensure to copy the Raw format).  Once copied, you should then paste the code into the cloud formation designer. Once the code has been pasted into the designer, check the code to ensure it is valid. Next  upload it and then follow the cloudformation stack build steps.
 
