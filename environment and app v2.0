@@ -146,30 +146,30 @@ Resources:
       VpcId: !Ref NodejsAPPVPC
       SecurityGroups: !Ref sgNodeJSSG
       UserData: 
-         Fn::Base64: !Sub |  
-                  
+         Fn::Base64: !Sub | 
+          
            #!/bin/bash -xe
            sudo apt-get update -qq
            sudo apt-get -y install curl
            mkdir -p /tmp/aws-cfn-bootstrap-latest
-           curl https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-1.4-8.tar.gz | tar xz -C /tmp/aws-cfn-bootstrap-latest --strip-components 1         curl https://s3-ap-southeast-2.amazonaws.com/bucket/cfn-hup.service -o /etc/systemd/system/cfn-hup.service
-           apt-get update
+           curl https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-1.4-8.tar.gz | tar xz -C /tmp/aws-cfn-bootstrap-latest --strip-components 1
+           curl https://s3-ap-southeast-2.amazonaws.com/bucket/cfn-hup.service -o /etc/systemd/system/cfn-hup.service
+           apt-get update -y
            apt-get install -y python-pip libssl-dev libffi-dev
-           pip install pyopenssl ndg-httpsclient pyasn1
+           pip install pyopenssl ndg-httpsclient pyasn1p
            pip install --upgrade /tmp/aws-cfn-bootstrap-latest
            cp /tmp/aws-cfn-bootstrap-latest/init/ubuntu/cfn-hup /etc/init.d/cfn-hup
            update-rc.d cfn-hup default
            chmod 755 /etc/init.d/cfn-hup
-           service cfn-hup start        
-
+           service cfn-hup start 
+           
            # Use the official docker install script
            wget -qO- https://get.docker.com/ | sh
-
+           
            # Install docker-compose 1.8.0
            sudo sh -c "curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose"
            sudo chmod +x /usr/local/bin/docker-compose
            sudo sh -c "curl -L https://raw.githubusercontent.com/docker/compose/1.8.0/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose"
-
            # Install docker-cleanup command
            cd /tmp
            rm -rf 76b450a0c986e576e98b
@@ -177,35 +177,33 @@ Resources:
            cd 76b450a0c986e576e98b
            sudo mv docker-cleanup /usr/local/bin/docker-cleanup
            sudo chmod +x /usr/local/bin/docker-cleanup
-        
-        
-        
+
   sgNodeJSSG:
     Type: AWS::EC2::SecurityGroup
     Properties:
-    GroupDescription: 'for the app nodes that allow ssh, http and docker ports'
-      VpcId: !Ref NodejsAPPVPC
+      GroupDescription: for the app nodes that allow ssh, http and docker ports
       SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: '22'
-          ToPort: '22'
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: '80'
-          ToPort: '80'
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: '2375'
-          ToPort: '2375'
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: '2368'
-          ToPort: '2368'
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: '3306'
-          ToPort: '3306'
-          CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '22'
+        ToPort: '22'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '80'
+        ToPort: '80'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '2375'
+        ToPort: '2375'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '2368'
+        ToPort: '2368'
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: '3306'
+        ToPort: '3306'
+        CidrIp: 0.0.0.0/0
+          
   s3beyondbucket2017:
     Type: 'AWS::S3::Bucket'
     Properties:
@@ -381,4 +379,3 @@ Resources:
       GroupId: !Ref sgNodeJSSG
       IpProtocol: '-1'
       CidrIp: 0.0.0.0/0
-
