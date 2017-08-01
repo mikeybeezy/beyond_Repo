@@ -12,7 +12,7 @@ Setup an ubuntu 16.04 box. Used docker containers to host a Node.js application.
 Copy the file application-deploy.yml from this repository (ensure to copy the Raw format).  Once copied, you should then paste the code into the cloud formation designer. Once the code has been pasted into the designer, check the code to ensure it is valid. Next  upload it and then follow the cloudformation stack build steps.
 
 
-# How to deploy the application in a VPC environment 
+# How to deploy the application and a VPC environment 
 Copy the file Env-and-App.json from this repository (ensure to copy the Raw format).  Once copied the, you should then paste the code into the cloud formation designer. Once the code has been pasted into the designer, check the code to ensure it is valid. Next  upload it and then follow the cloudformation stack build steps.
 
 # Challenges
