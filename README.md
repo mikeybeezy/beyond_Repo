@@ -10,3 +10,7 @@ Setup an ubuntu 16.04 box. Used docker containers to host a Node.js application.
 #Challenges
 
 Deciding whether to use RDS or Docker container for the application Database. I opted to go with the Docker container option as I felt it it would allow me to learn more about how the technology worked and eventually progress to kubernetes. Some of the challenges I faced include finding the most efficient method to maintain and manage persistent data across all platforms and instances. orchrastrating the implementation of automation with as little human intervention as possible. Having to decide whether to pre bake Ubuntu AMI's with all necessary settings and configs or automating  all installation and configuration on demand.
+
+# How to test the application in aany environment 
+
+Copy the file application-deploy.yml from this repository (ensure to copy the Raw format).  Once copied the code into the cloud formation designer. Once the code has been pasted into the designer, check the code to ensure it is valid. Next  upload it and then follow the cloudformation stack build steps.
