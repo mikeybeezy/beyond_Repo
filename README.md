@@ -7,10 +7,17 @@ The web application is Ghost CMS. Ghost is an open source publishing platform bu
 
 Setup an ubuntu 16.04 box. Used docker containers to host a Node.js application. Used Docker To host a Maria DB container. Synced and replicated the content to AWS S3 Replicated content from AWS S3 to the Ubuntu Box that hosts the Docker containers Created an AWS environment to deploy the application into
 
-# Challenges
-
-Deciding whether to use RDS or Docker container for the application Database. I opted to go with the Docker container option as I felt it it would allow me to learn more about how the technology worked and eventually progress to kubernetes. Some of the challenges I faced include finding the most efficient method to maintain and manage persistent data across all platforms and instances. orchrastrating the implementation of automation with as little human intervention as possible. Having to decide whether to pre bake Ubuntu AMI's with all necessary settings and configs or automating  all installation and configuration on demand.
-
-# How to test the application in a VPC environment 
+# How to deploy the application in a VPC environment 
 
 Copy the file application-deploy.yml from this repository (ensure to copy the Raw format).  Once copied the code into the cloud formation designer. Once the code has been pasted into the designer, check the code to ensure it is valid. Next  upload it and then follow the cloudformation stack build steps.
+
+
+# How to deploy the application in a VPC environment 
+Copy the file Env-and-App.json from this repository (ensure to copy the Raw format).  Once copied the code into the cloud formation designer. Once the code has been pasted into the designer, check the code to ensure it is valid. Next  upload it and then follow the cloudformation stack build steps.
+
+# Challenges
+
+Other than the time factor the other main challeneg was deciding whether to use RDS or Docker container for the application Database. I opted to go with the Docker container option as I felt it it would allow me to learn more about how the technology worked and eventually progress to kubernetes. Some of the challenges I faced include finding the most efficient method to maintain and manage persistent data across all platforms and instances. orchrastrating the implementation of automation with as little human intervention as possible. Having to decide whether to pre bake Ubuntu AMI's with all necessary settings and configs or automating  all installation and configuration on demand. Another challenge was getting the cfn-init script to build install configure the Ubuntu bok and launch the application. I found  myself switiching between .json and .ymal files in attempting to resolve this issue. Howevr I'm convinced that with more time I would have gotten things to work. Please refer to the Env-and-app.yml file to review the progress. 
+
+
+
