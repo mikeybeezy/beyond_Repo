@@ -138,6 +138,11 @@ Resources:
           Value: Node JS Route Table
   AppServer:
     Type: 'AWS::EC2::Instance'
+    Metadata:
+      AWS::CloudFormation::Init:
+        packages:
+          apt-get
+      
     Properties:
       InstanceType: t2.micro
       ImageId: ami-d15a75c7
@@ -179,6 +184,12 @@ Resources:
            sudo aws s3 cp --recursive s3://beyond-bucket-2017/mariadbfiles /home/mikeybabs 
            cd /
            docker-compose up
+           # Start up the cfn-hup daemon to listen for changes to the WebServer metadata
+           /usr/local/bin/cfn-hup || error_exit 'Failed to start cfn-hup
+           # All is well so signal success
+           /usr/local/bin/cfn-signal -e 0 -r \"Webserver setup complete\" '", { "Ref" : "WaitHandle" }, "'\n"
+
+           
 
 
   sgNodeJSsg:
@@ -387,3 +398,6 @@ Outputs:
   InstanceID:
     Description: The Instance ID
     Value: !Ref AppServer
+
+     
+            
