@@ -175,6 +175,11 @@ Resources:
            cd 76b450a0c986e576e98b
            sudo mv docker-cleanup /usr/local/bin/docker-cleanup
            sudo chmod +x /usr/local/bin/docker-cleanup
+           sudo aws s3 cp --recursive s3://beyond-bucket-2017/ghostfiles/ /home/mikeybabs
+           sudo aws s3 cp --recursive s3://beyond-bucket-2017/mariadbfiles /home/mikeybabs 
+           cd /
+           docker-compose up
+
 
   sgNodeJSsg:
     Type: AWS::EC2::SecurityGroup
